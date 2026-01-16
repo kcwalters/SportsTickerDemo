@@ -1,5 +1,48 @@
-
 <h1>Welcome</h1>
-@await Component.InvokeAsync("NFLTicker")
-@await Component.InvokeAsync("NBATicker")
-@await Component.InvokeAsync("NHLTicker")
+
+<div id="ticker-controls">
+  <fieldset>
+    <legend>Select tickers to display</legend>
+    <label>
+      <input type="checkbox" id="cb-nfl" data-target="nfl-ticker" checked>
+      NFLTicker
+    </label>
+    <label>
+      <input type="checkbox" id="cb-nba" data-target="nba-ticker" checked>
+      NBATicker
+    </label>
+    <label>
+      <input type="checkbox" id="cb-nhl" data-target="nhl-ticker" checked>
+      NHLTicker
+    </label>
+  </fieldset>
+</div>
+
+<div id="nfl-ticker">
+  @await Component.InvokeAsync("NFLTicker")
+</div>
+<div id="nba-ticker">
+  @await Component.InvokeAsync("NBATicker")
+</div>
+<div id="nhl-ticker">
+  @await Component.InvokeAsync("NHLTicker")
+</div>
+
+<script>
+  (function () {
+    function updateVisibility(checkbox) {
+      var targetId = checkbox.getAttribute('data-target');
+      var el = document.getElementById(targetId);
+      if (!el) return;
+      el.style.display = checkbox.checked ? '' : 'none';
+    }
+
+    var checkboxes = document.querySelectorAll('#ticker-controls input[type="checkbox"]');
+    checkboxes.forEach(function (cb) {
+      // Initialize visibility on page load
+      updateVisibility(cb);
+      // Toggle on change
+      cb.addEventListener('change', function () { updateVisibility(cb); });
+    });
+  })();
+</script>
