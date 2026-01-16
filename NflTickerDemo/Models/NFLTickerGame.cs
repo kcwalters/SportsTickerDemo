@@ -10,6 +10,7 @@ namespace SportsTickerDemo.Models
 
         public string AwayLogo { get; set; } = "";
         public string HomeLogo { get; set; } = "";
+        public string HeaderLogoPath { get; set; } = "./images/nfl.svg";
 
         public bool AwayHasPossession { get; set; }
         public bool HomeHasPossession { get; set; }

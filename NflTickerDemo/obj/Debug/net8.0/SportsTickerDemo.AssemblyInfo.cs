@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+639223abbc61525af7a6b134044edd83e30198cb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d578672f09e24bba8b6667a254eef9fb70c9b04b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
