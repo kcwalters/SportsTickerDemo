@@ -30,6 +30,29 @@
 
 <script>
   (function () {
+    var STORAGE_KEY = 'sportsTickerSelections';
+
+    function loadSelections() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveSelections(checkboxes) {
+      var selections = {};
+      checkboxes.forEach(function (cb) {
+        selections[cb.id] = !!cb.checked;
+      });
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(selections));
+      } catch (e) {
+        // ignore storage errors
+      }
+    }
+
     function updateVisibility(checkbox) {
       var targetId = checkbox.getAttribute('data-target');
       var el = document.getElementById(targetId);
@@ -37,12 +60,27 @@
       el.style.display = checkbox.checked ? '' : 'none';
     }
 
-    var checkboxes = document.querySelectorAll('#ticker-controls input[type="checkbox"]');
+    var checkboxes = Array.prototype.slice.call(document.querySelectorAll('#ticker-controls input[type="checkbox"]'));
+
+    // Restore previous selections if available
+    var saved = loadSelections();
+    if (saved) {
+      checkboxes.forEach(function (cb) {
+        if (saved.hasOwnProperty(cb.id)) {
+          cb.checked = !!saved[cb.id];
+        }
+      });
+    }
+
+    // Initialize visibility on page load
+    checkboxes.forEach(function (cb) { updateVisibility(cb); });
+
+    // Toggle on change and persist
     checkboxes.forEach(function (cb) {
-      // Initialize visibility on page load
-      updateVisibility(cb);
-      // Toggle on change
-      cb.addEventListener('change', function () { updateVisibility(cb); });
+      cb.addEventListener('change', function () {
+        updateVisibility(cb);
+        saveSelections(checkboxes);
+      });
     });
   })();
 </script>
