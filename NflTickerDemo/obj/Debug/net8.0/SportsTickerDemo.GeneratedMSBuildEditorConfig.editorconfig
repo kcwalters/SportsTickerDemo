@@ -1,0 +1,71 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.RootNamespace = SportsTickerDemo
+build_property.RootNamespace = SportsTickerDemo
+build_property.ProjectDir = C:\Users\kcwal\source\repos\SportsTickerDemo\NflTickerDemo\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\kcwal\source\repos\SportsTickerDemo\NflTickerDemo
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Scores/_NBATickerInner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NvcmVzXF9OQkFUaWNrZXJJbm5lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Scores/_NFLTickerInner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NvcmVzXF9ORkxUaWNrZXJJbm5lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Scores/_NHLTickerInner.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2NvcmVzXF9OSExUaWNrZXJJbm5lci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Shared/Components/NBATicker/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTkJBVGlja2VyXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Shared/Components/NFLTicker/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTkZMVGlja2VyXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Shared/Components/NHLTicker/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTkhMVGlja2VyXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kcwal/source/repos/SportsTickerDemo/NflTickerDemo/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

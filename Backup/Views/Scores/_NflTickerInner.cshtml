@@ -1,0 +1,15 @@
+@model IReadOnlyList<NflTickerDemo.Models.NflTickerGame>
+@foreach (var g in Model)
+{
+    var cssClass = g.IsLive ? ""live"" :
+                   g.IsFinal ? ""final"" :
+                   ""upcoming"";
+    <div class=""nfl-ticker-item @cssClass"">
+        <span class=""ticker-status"">@g.StatusText</span>
+        <span class=""ticker-team"">@g.AwayTeam</span>
+        <span class=""ticker-score"">@((g.AwayScore?.ToString()) ?? ""-"")</span>
+        <span class=""ticker-separator"">@(""@"")</span>
+        <span class=""ticker-team"">@g.HomeTeam</span>
+        <span class=""ticker-score"">@((g.HomeScore?.ToString()) ?? ""-"")</span>
+    </div>
+}

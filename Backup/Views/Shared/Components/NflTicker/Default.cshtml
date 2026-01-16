@@ -1,0 +1,6 @@
+@model IReadOnlyList<NflTickerDemo.Models.NflTickerGame>
+<div id=""nfl-ticker"" class=""nfl-ticker"">
+    <div class=""nfl-ticker-inner"">
+        @await Html.PartialAsync(""~/Views/Scores/_NflTickerInner.cshtml"", Model)
+    </div>
+</div>

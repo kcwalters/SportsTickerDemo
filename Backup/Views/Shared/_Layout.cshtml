@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""utf-8"" />
+    <title>@ViewData[""Title""] - NflTickerDemo</title>
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
+    <link rel=""stylesheet"" href=""~/css/site.css"" />
+</head>
+<body>
+    <header>
+        <div class=""site-header"">
+            <span class=""site-title"">NflTickerDemo</span>
+        </div>
+        @await Component.InvokeAsync(""NflTicker"")
+    </header>
+    <main class=""main-content"">
+        @RenderBody()
+    </main>
+    <script src=""~/js/site.js""></script>
+    @RenderSection(""Scripts"", required: false)
+</body>
+</html>
