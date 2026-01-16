@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("SportsTickerDemo-Dev-ApiKey")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b5dcde440cc8ab61471947e6313de826c3a6851")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+785e6b1df7baac585929ae451533aae89a296bc7")]
 [assembly: System.Reflection.AssemblyProductAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SportsTickerDemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

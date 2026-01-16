@@ -1,5 +1,7 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using SportsTickerDemo.Models;
 
 namespace SportsTickerDemo.Services
@@ -8,21 +10,34 @@ namespace SportsTickerDemo.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<NBAScoresService> _logger;
+        private readonly IMemoryCache _cache;
+        private readonly string _scoreboardUrl;
 
-        private const string ScoreboardUrl =
+        private const string DefaultScoreboardUrl =
             "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard";
+        private const string CacheKey = "nba:scoreboard";
+        private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(60);
 
-        public NBAScoresService(HttpClient httpClient, ILogger<NBAScoresService> logger)
+        public NBAScoresService(HttpClient httpClient, ILogger<NBAScoresService> logger, IMemoryCache cache, IOptions<SportsTickerOptions> options)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _cache = cache;
+            var cfg = options.Value;
+            _scoreboardUrl = string.IsNullOrWhiteSpace(cfg.NbaApiBaseUrl) ? DefaultScoreboardUrl : cfg.NbaApiBaseUrl.TrimEnd('/');
         }
 
         public async Task<IReadOnlyList<NBATickerGame>> GetGamesAsync(CancellationToken cancellationToken = default)
         {
+            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NBATickerGame>? cached) && cached is not null)
+            {
+                _logger.LogDebug("Returning NBA scores from cache.");
+                return cached;
+            }
+
             try
             {
-                using var response = await _httpClient.GetAsync(ScoreboardUrl, cancellationToken);
+                using var response = await _httpClient.GetAsync(_scoreboardUrl, cancellationToken);
                 response.EnsureSuccessStatusCode();
 
                 await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -33,7 +48,12 @@ namespace SportsTickerDemo.Services
                     eventsElement.ValueKind != JsonValueKind.Array)
                 {
                     _logger.LogWarning("ESPN NBA scoreboard: 'events' array missing or invalid.");
-                    return Array.Empty<NBATickerGame>();
+                    var empty = Array.Empty<NBATickerGame>();
+                    _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = CacheTtl
+                    });
+                    return empty;
                 }
 
                 var games = new List<NBATickerGame>();
@@ -46,12 +66,22 @@ namespace SportsTickerDemo.Services
                     }
                 }
 
-                return games;
+                var result = (IReadOnlyList<NBATickerGame>)games;
+                _cache.Set(CacheKey, result, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = CacheTtl
+                });
+                return result;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching NBA scoreboard from ESPN.");
-                return Array.Empty<NBATickerGame>();
+                var empty = Array.Empty<NBATickerGame>();
+                _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = CacheTtl
+                });
+                return empty;
             }
         }
 

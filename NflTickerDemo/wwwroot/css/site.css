@@ -311,3 +311,10 @@ body {
     gap: 1rem;
 }
 .tickers-row > div { flex: 0 0 auto; }
+
+/* League logo sizing (fixed inline next to ticker) */
+.league-logo {
+    height: 75px;
+    width: auto;
+    object-fit: contain;
+}

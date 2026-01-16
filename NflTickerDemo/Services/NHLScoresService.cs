@@ -1,5 +1,8 @@
-using SportsTickerDemo.Models;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using SportsTickerDemo.Models;
 
 namespace SportsTickerDemo.Services
 {
@@ -7,21 +10,34 @@ namespace SportsTickerDemo.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<NHLScoresService> _logger;
+        private readonly IMemoryCache _cache;
+        private readonly string _scoreboardUrl;
 
-        private const string ScoreboardUrl =
+        private const string DefaultScoreboardUrl =
             "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard";
+        private const string CacheKey = "nhl:scoreboard";
+        private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(60);
 
-        public NHLScoresService(HttpClient httpClient, ILogger<NHLScoresService> logger)
+        public NHLScoresService(HttpClient httpClient, ILogger<NHLScoresService> logger, IMemoryCache cache, IOptions<SportsTickerOptions> options)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _cache = cache;
+            var cfg = options.Value;
+            _scoreboardUrl = string.IsNullOrWhiteSpace(cfg.NhlApiBaseUrl) ? DefaultScoreboardUrl : cfg.NhlApiBaseUrl.TrimEnd('/');
         }
 
         public async Task<IReadOnlyList<NHLTickerGame>> GetGamesAsync(CancellationToken cancellationToken = default)
         {
+            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NHLTickerGame>? cached) && cached is not null)
+            {
+                _logger.LogDebug("Returning NHL scores from cache.");
+                return cached;
+            }
+
             try
             {
-                using var response = await _httpClient.GetAsync(ScoreboardUrl, cancellationToken);
+                using var response = await _httpClient.GetAsync(_scoreboardUrl, cancellationToken);
                 response.EnsureSuccessStatusCode();
 
                 await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -32,7 +48,12 @@ namespace SportsTickerDemo.Services
                     eventsElement.ValueKind != JsonValueKind.Array)
                 {
                     _logger.LogWarning("ESPN NHL scoreboard: 'events' array missing or invalid.");
-                    return Array.Empty<NHLTickerGame>();
+                    var empty = Array.Empty<NHLTickerGame>();
+                    _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = CacheTtl
+                    });
+                    return empty;
                 }
 
                 var games = new List<NHLTickerGame>();
@@ -45,12 +66,22 @@ namespace SportsTickerDemo.Services
                     }
                 }
 
-                return games;
+                var result = (IReadOnlyList<NHLTickerGame>)games;
+                _cache.Set(CacheKey, result, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = CacheTtl
+                });
+                return result;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching NHL scoreboard from ESPN.");
-                return Array.Empty<NHLTickerGame>();
+                var empty = Array.Empty<NHLTickerGame>();
+                _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = CacheTtl
+                });
+                return empty;
             }
         }
 

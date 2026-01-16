@@ -1,5 +1,10 @@
+using SportsTickerDemo;
 using SportsTickerDemo.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Bind options from configuration
+builder.Services.Configure<SportsTickerOptions>(builder.Configuration.GetSection("SportsTicker"));
 
 // Razor Pages
 builder.Services.AddRazorPages();
@@ -7,18 +12,12 @@ builder.Services.AddRazorPages();
 // MVC controllers (needed for ScoresController)
 builder.Services.AddControllersWithViews();
 
-// Typed HTTP client
-// NFL
-builder.Services.AddHttpClient<NFLScoresService>();
-builder.Services.AddScoped<INFLScoresService, NFLScoresService>();
+// Caching
+builder.Services.AddMemoryCache();
 
-// NBA
-builder.Services.AddHttpClient<NBAScoresService>();
-builder.Services.AddScoped<INBAScoresService, NBAScoresService>();
+// Register tickers services and typed HttpClients with resilience policies
+builder.Services.AddSportsTickers(builder.Configuration);
 
-// NHL
-builder.Services.AddHttpClient<NHLScoresService>();
-builder.Services.AddScoped<INHLScoresService, NHLScoresService>();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

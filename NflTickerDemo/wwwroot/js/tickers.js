@@ -52,6 +52,8 @@
 
     updateVisibilityByState(checkboxes);
 
+    var details = document.getElementById('ticker-controls-details');
+
     checkboxes.forEach(function (cb) {
       cb.addEventListener('change', function () {
         if (cb.checked) {
@@ -62,13 +64,16 @@
         }
         updateVisibilityByState(checkboxes);
         saveSelections(checkboxes);
+        // Collapse controls after selection
+        if (details) { details.open = false; }
       });
     });
 
-    // Remove hover-only interaction; <details>/<summary> provides accessible toggle by click/keyboard
-    var details = document.getElementById('ticker-controls-details');
-    if (details) {
-      // Ensure summary is focusable and has aria-label via markup; no JS hover handlers
+    // Hover open/close on the container
+    var container = document.getElementById('ticker-controls');
+    if (container && details) {
+      container.addEventListener('mouseenter', function () { details.open = true; });
+      container.addEventListener('mouseleave', function () { details.open = false; });
     }
   }
 
