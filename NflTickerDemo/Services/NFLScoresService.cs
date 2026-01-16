@@ -28,9 +28,9 @@ namespace SportsTickerDemo.Services
             _scoreboardUrl = string.IsNullOrWhiteSpace(cfg.NflApiBaseUrl) ? DefaultScoreboardUrl : cfg.NflApiBaseUrl.TrimEnd('/');
         }
 
-        public async Task<IReadOnlyList<NFLTickerGame>> GetGamesAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<NFLTickerView>> GetGamesAsync(CancellationToken cancellationToken = default)
         {
-            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NFLTickerGame>? cached) && cached is not null)
+            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NFLTickerView>? cached) && cached is not null)
             {
                 _logger.LogDebug("Returning NFL scores from cache.");
                 return cached;
@@ -49,35 +49,35 @@ namespace SportsTickerDemo.Services
                     eventsElement.ValueKind != JsonValueKind.Array)
                 {
                     _logger.LogWarning("ESPN scoreboard: 'events' array missing or invalid.");
-                    var empty = Array.Empty<NFLTickerGame>();
+                    var empty = Array.Empty<NFLTickerView>();
                     _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheTtl });
                     return empty;
                 }
 
-                var games = new List<NFLTickerGame>();
+                var games = new List<NFLTickerView>();
                 foreach (var ev in eventsElement.EnumerateArray())
                 {
                     var game = MapEventToTickerGame(ev);
-                    if (game != null)
+                    if (game is not null)
                     {
-                        games.Add(game);
+                        games.Add(game.Value);
                     }
                 }
 
-                var result = (IReadOnlyList<NFLTickerGame>)games;
+                var result = (IReadOnlyList<NFLTickerView>)games;
                 _cache.Set(CacheKey, result, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheTtl });
                 return result;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching NFL scoreboard from ESPN.");
-                var empty = Array.Empty<NFLTickerGame>();
+                var empty = Array.Empty<NFLTickerView>();
                 _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = CacheTtl });
                 return empty;
             }
         }
 
-        private static NFLTickerGame? MapEventToTickerGame(JsonElement ev)
+        private static NFLTickerView? MapEventToTickerGame(JsonElement ev)
         {
             if (!ev.TryGetProperty("competitions", out var compsElement) ||
                 compsElement.ValueKind != JsonValueKind.Array ||
@@ -155,19 +155,18 @@ namespace SportsTickerDemo.Services
                     _ => state
                 };
 
-            return new NFLTickerGame
-            {
-                AwayTeam = awayTeam,
-                HomeTeam = homeTeam,
-                AwayScore = awayScore,
-                HomeScore = homeScore,
-                AwayLogo = awayLogo,
-                HomeLogo = homeLogo,
-                StatusText = statusText,
-                IsLive = isLive,
-                IsFinal = isFinal,
-                EventId = eventId
-            };
+            return new NFLTickerView(
+                awayTeam,
+                homeTeam,
+                awayScore,
+                homeScore,
+                awayLogo,
+                homeLogo,
+                statusText,
+                isLive,
+                isFinal,
+                eventId
+            );
         }
 
         private static string GetLogoUrl(JsonElement teamNode, string teamAbbr)
@@ -193,8 +192,7 @@ namespace SportsTickerDemo.Services
                 }
             }
 
-            // Optional local fallback if you host team assets
-            return $"/images/nfl/{teamAbbr.ToLowerInvariant()}.svg";
+            return $"/img/nfl/{teamAbbr.ToLowerInvariant()}.svg";
         }
     }
 }

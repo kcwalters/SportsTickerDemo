@@ -1,8 +1,8 @@
+using SportsTickerDemo.Models;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using SportsTickerDemo.Models;
 
 namespace SportsTickerDemo.Services
 {
@@ -27,9 +27,9 @@ namespace SportsTickerDemo.Services
             _scoreboardUrl = string.IsNullOrWhiteSpace(cfg.NhlApiBaseUrl) ? DefaultScoreboardUrl : cfg.NhlApiBaseUrl.TrimEnd('/');
         }
 
-        public async Task<IReadOnlyList<NHLTickerGame>> GetGamesAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<NHLTickerView>> GetGamesAsync(CancellationToken cancellationToken = default)
         {
-            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NHLTickerGame>? cached) && cached is not null)
+            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NHLTickerView>? cached) && cached is not null)
             {
                 _logger.LogDebug("Returning NHL scores from cache.");
                 return cached;
@@ -48,7 +48,7 @@ namespace SportsTickerDemo.Services
                     eventsElement.ValueKind != JsonValueKind.Array)
                 {
                     _logger.LogWarning("ESPN NHL scoreboard: 'events' array missing or invalid.");
-                    var empty = Array.Empty<NHLTickerGame>();
+                    var empty = Array.Empty<NHLTickerView>();
                     _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = CacheTtl
@@ -56,17 +56,17 @@ namespace SportsTickerDemo.Services
                     return empty;
                 }
 
-                var games = new List<NHLTickerGame>();
+                var games = new List<NHLTickerView>();
                 foreach (var ev in eventsElement.EnumerateArray())
                 {
                     var game = MapEventToTickerGame(ev);
-                    if (game != null)
+                    if (game is not null)
                     {
-                        games.Add(game);
+                        games.Add(game.Value);
                     }
                 }
 
-                var result = (IReadOnlyList<NHLTickerGame>)games;
+                var result = (IReadOnlyList<NHLTickerView>)games;
                 _cache.Set(CacheKey, result, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = CacheTtl
@@ -76,7 +76,7 @@ namespace SportsTickerDemo.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching NHL scoreboard from ESPN.");
-                var empty = Array.Empty<NHLTickerGame>();
+                var empty = Array.Empty<NHLTickerView>();
                 _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = CacheTtl
@@ -85,7 +85,7 @@ namespace SportsTickerDemo.Services
             }
         }
 
-        private static NHLTickerGame? MapEventToTickerGame(JsonElement ev)
+        private static NHLTickerView? MapEventToTickerGame(JsonElement ev)
         {
             if (!ev.TryGetProperty("competitions", out var compsElement) ||
                 compsElement.ValueKind != JsonValueKind.Array ||
@@ -163,19 +163,18 @@ namespace SportsTickerDemo.Services
                     _ => state
                 };
 
-            return new NHLTickerGame
-            {
-                AwayTeam = awayTeam,
-                HomeTeam = homeTeam,
-                AwayScore = awayScore,
-                HomeScore = homeScore,
-                AwayLogo = awayLogo,
-                HomeLogo = homeLogo,
-                StatusText = statusText,
-                IsLive = isLive,
-                IsFinal = isFinal,
-                EventId = eventId
-            };
+            return new NHLTickerView(
+                awayTeam,
+                homeTeam,
+                awayScore,
+                homeScore,
+                awayLogo,
+                homeLogo,
+                statusText,
+                isLive,
+                isFinal,
+                eventId
+            );
         }
 
         private static string GetLogoUrl(JsonElement teamNode, string teamAbbr)
@@ -201,7 +200,7 @@ namespace SportsTickerDemo.Services
                 }
             }
 
-            return $"/images/nhl/{teamAbbr.ToLowerInvariant()}.svg";
+            return $"/img/nhl/{teamAbbr.ToLowerInvariant()}.svg";
         }
     }
 }

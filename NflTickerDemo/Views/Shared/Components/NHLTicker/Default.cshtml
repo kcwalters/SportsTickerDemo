@@ -1,4 +1,4 @@
-@model IReadOnlyList<SportsTickerDemo.Models.NHLTickerGame>
+@model IReadOnlyList<SportsTickerDemo.Models.NHLTickerView>
 <div id="nhl-ticker" class="nhl-ticker">
     <div class="nhl-ticker-inner">
         @await Html.PartialAsync("~/Views/Scores/_NHLTickerInner.cshtml", Model)

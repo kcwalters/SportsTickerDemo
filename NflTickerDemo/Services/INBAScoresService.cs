@@ -5,6 +5,6 @@ namespace SportsTickerDemo.Services
 
     public interface INBAScoresService
     {
-        Task<IReadOnlyList<NBATickerGame>> GetGamesAsync(CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<NBATickerView>> GetGamesAsync(CancellationToken cancellationToken = default);
     }
 }

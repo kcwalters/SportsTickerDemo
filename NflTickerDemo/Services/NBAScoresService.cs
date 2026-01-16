@@ -27,9 +27,9 @@ namespace SportsTickerDemo.Services
             _scoreboardUrl = string.IsNullOrWhiteSpace(cfg.NbaApiBaseUrl) ? DefaultScoreboardUrl : cfg.NbaApiBaseUrl.TrimEnd('/');
         }
 
-        public async Task<IReadOnlyList<NBATickerGame>> GetGamesAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<NBATickerView>> GetGamesAsync(CancellationToken cancellationToken = default)
         {
-            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NBATickerGame>? cached) && cached is not null)
+            if (_cache.TryGetValue(CacheKey, out IReadOnlyList<NBATickerView>? cached) && cached is not null)
             {
                 _logger.LogDebug("Returning NBA scores from cache.");
                 return cached;
@@ -48,7 +48,7 @@ namespace SportsTickerDemo.Services
                     eventsElement.ValueKind != JsonValueKind.Array)
                 {
                     _logger.LogWarning("ESPN NBA scoreboard: 'events' array missing or invalid.");
-                    var empty = Array.Empty<NBATickerGame>();
+                    var empty = Array.Empty<NBATickerView>();
                     _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = CacheTtl
@@ -56,17 +56,17 @@ namespace SportsTickerDemo.Services
                     return empty;
                 }
 
-                var games = new List<NBATickerGame>();
+                var games = new List<NBATickerView>();
                 foreach (var ev in eventsElement.EnumerateArray())
                 {
                     var game = MapEventToTickerGame(ev);
-                    if (game != null)
+                    if (game is not null)
                     {
-                        games.Add(game);
+                        games.Add(game.Value);
                     }
                 }
 
-                var result = (IReadOnlyList<NBATickerGame>)games;
+                var result = (IReadOnlyList<NBATickerView>)games;
                 _cache.Set(CacheKey, result, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = CacheTtl
@@ -76,7 +76,7 @@ namespace SportsTickerDemo.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching NBA scoreboard from ESPN.");
-                var empty = Array.Empty<NBATickerGame>();
+                var empty = Array.Empty<NBATickerView>();
                 _cache.Set(CacheKey, empty, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = CacheTtl
@@ -85,7 +85,7 @@ namespace SportsTickerDemo.Services
             }
         }
 
-        private static NBATickerGame? MapEventToTickerGame(JsonElement ev)
+        private static NBATickerView? MapEventToTickerGame(JsonElement ev)
         {
             if (!ev.TryGetProperty("competitions", out var compsElement) ||
                 compsElement.ValueKind != JsonValueKind.Array ||
@@ -163,19 +163,18 @@ namespace SportsTickerDemo.Services
                     _ => state
                 };
 
-            return new NBATickerGame
-            {
-                AwayTeam = awayTeam,
-                HomeTeam = homeTeam,
-                AwayScore = awayScore,
-                HomeScore = homeScore,
-                AwayLogo = awayLogo,
-                HomeLogo = homeLogo,
-                StatusText = statusText,
-                IsLive = isLive,
-                IsFinal = isFinal,
-                EventId = eventId
-            };
+            return new NBATickerView(
+                awayTeam,
+                homeTeam,
+                awayScore,
+                homeScore,
+                awayLogo,
+                homeLogo,
+                statusText,
+                isLive,
+                isFinal,
+                eventId
+            );
         }
 
         private static string GetLogoUrl(JsonElement teamNode, string teamAbbr)
@@ -201,7 +200,7 @@ namespace SportsTickerDemo.Services
                 }
             }
 
-            return $"/images/nba/{teamAbbr.ToLowerInvariant()}.svg";
+            return $"/img/nba/{teamAbbr.ToLowerInvariant()}.svg";
         }
     }
 }

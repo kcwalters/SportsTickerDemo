@@ -5,6 +5,6 @@ namespace SportsTickerDemo.Services
 
     public interface INHLScoresService
     {
-        Task<IReadOnlyList<NHLTickerGame>> GetGamesAsync(CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<NHLTickerView>> GetGamesAsync(CancellationToken cancellationToken = default);
     }
 }

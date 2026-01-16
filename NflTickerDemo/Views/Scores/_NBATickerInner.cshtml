@@ -1,7 +1,7 @@
-@using SportsTickerDemo.Models;
-@model IReadOnlyList<NBATickerGame>
+@using SportsTickerDemo.Models
+@model IReadOnlyList<NBATickerView>
 <div class="nba-header-row" style="display:flex; align-items:center; gap:0.75rem;">
-    <img src="~/img/nbalogosmall.png" alt="NBA" style="height:75px;width:auto;object-fit:contain; flex:0 0 auto;" />
+    <img src="~/img/nbalogosmall.png" alt="NBA" class="league-logo" />
     <div class="nba-ticker" style="flex:1 1 auto;"> 
         <div class="nba-ticker-track">
             @foreach (var g in Model)
