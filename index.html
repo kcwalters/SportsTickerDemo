@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Ticker Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏆 Sports Ticker Demo</h1>
+            <p class="subtitle">Live Sports Updates & Scores</p>
+        </header>
+        
+        <div class="ticker-container">
+            <div class="ticker-label">LIVE</div>
+            <div class="ticker-wrap">
+                <div class="ticker-content" id="ticker">
+                    <!-- Ticker items will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="pauseBtn" class="btn">⏸ Pause</button>
+            <button id="speedBtn" class="btn">⚡ Speed</button>
+            <button id="refreshBtn" class="btn">🔄 Refresh</button>
+        </div>
+
+        <div class="sports-grid">
+            <div class="sport-card">
+                <h3>⚽ Soccer</h3>
+                <div id="soccer-scores" class="scores"></div>
+            </div>
+            <div class="sport-card">
+                <h3>🏀 Basketball</h3>
+                <div id="basketball-scores" class="scores"></div>
+            </div>
+            <div class="sport-card">
+                <h3>🏈 Football</h3>
+                <div id="football-scores" class="scores"></div>
+            </div>
+            <div class="sport-card">
+                <h3>⚾ Baseball</h3>
+                <div id="baseball-scores" class="scores"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
