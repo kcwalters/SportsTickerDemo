@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs
+/NflTickerDemo/bin/Debug/net8.0/SportsTickerDemo.dll
+/NflTickerDemo/bin/Debug/net8.0/SportsTickerDemo.exe
+/NflTickerDemo/bin/Debug/net8.0/SportsTickerDemo.pdb
+/NflTickerDemo/obj/Release/net8.0/ref/SportsTickerDemo.dll
