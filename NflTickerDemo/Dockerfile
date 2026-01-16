@@ -1,28 +1,30 @@
-# Build stage
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-# Copy source
-COPY . .
-
-# Restore
-RUN dotnet restore NflTickerDemo/SportsTickerDemo.csproj
-
-# Publish
-RUN dotnet publish NflTickerDemo/SportsTickerDemo.csproj -c Release -o /app/publish --no-restore
-
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+# This stage is used when running from VS in fast mode (Default for Debug configuration)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
-
-# Copy published app
-COPY --from=build /app/publish .
-
-# Expose default port
 EXPOSE 8080
+EXPOSE 8081
 
-# Configure Kestrel to listen on 8080
-ENV ASPNETCORE_URLS=http://+:8080
 
-# Entry point
-ENTRYPOINT ["dotnet","SportsTickerDemo.dll"]
+# This stage is used to build the service project
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["NflTickerDemo/SportsTickerDemo.csproj", "NflTickerDemo/"]
+RUN dotnet restore "./NflTickerDemo/SportsTickerDemo.csproj"
+COPY . .
+WORKDIR "/src/NflTickerDemo"
+RUN dotnet build "./SportsTickerDemo.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# This stage is used to publish the service project to be copied to the final stage
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./SportsTickerDemo.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "SportsTickerDemo.dll"]

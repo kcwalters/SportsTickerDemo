@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pC0hqjsHnv0=",
+  "dgSpecHash": "q2cIo5U1th4=",
   "success": true,
   "projectFilePath": "C:\\Users\\kcwal\\source\\repos\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
   "expectedPackageFiles": [
@@ -75,6 +75,7 @@
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.extensions.dependencymodel\\8.0.0\\microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.net.stringtools\\17.7.2\\microsoft.net.stringtools.17.7.2.nupkg.sha512",
+    "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.23.0\\microsoft.visualstudio.azure.containers.tools.targets.1.23.0.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\8.0.0\\microsoft.visualstudio.web.codegeneration.8.0.0.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\8.0.0\\microsoft.visualstudio.web.codegeneration.core.8.0.0.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.design\\8.0.0\\microsoft.visualstudio.web.codegeneration.design.8.0.0.nupkg.sha512",
