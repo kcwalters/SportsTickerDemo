@@ -267,3 +267,26 @@ body {
 
 /* Pause on hover */
 .nhl-ticker:hover .nhl-ticker-track { animation-play-state: paused; }
+
+/* Controls: league selector */
+#ticker-controls label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 1rem;
+}
+#ticker-controls label img.league-logo {
+    height: 20px;
+    width: auto;
+    object-fit: contain;
+    display: inline-block;
+}
+
+/* Layout: tickers row */
+.tickers-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1rem;
+}
+.tickers-row > div { flex: 0 0 auto; }

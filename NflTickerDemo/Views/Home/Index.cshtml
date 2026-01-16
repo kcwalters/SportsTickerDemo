@@ -6,21 +6,6 @@
     <details id="ticker-controls-details">
         <summary style="cursor:pointer; user-select:none;">Select league ticker to display</summary>
         <fieldset>
-            <style>
-                #ticker-controls label {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.4rem;
-                    margin-right: 1rem;
-                }
-
-                    #ticker-controls label img.league-logo {
-                        height: 20px;
-                        width: auto;
-                        object-fit: contain;
-                        display: inline-block;
-                    }
-            </style>
             <label>
                 <img class="league-logo" src="~/img/nfl_ticker_logo.jpg" alt="NFL" />
                 <input type="checkbox" id="cb-nfl" data-target="nfl-ticker" checked>
@@ -40,20 +25,6 @@
     </details>
 </div>
 
-<style>
-    .tickers-row {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-        .tickers-row > div {
-            /* allow each ticker to size to its content */
-            flex: 0 0 auto;
-        }
-</style>
-
 <div class="tickers-row">
     <div id="nfl-ticker">
         @await Component.InvokeAsync("NFLTicker")
@@ -66,109 +37,4 @@
     </div>
 </div>
 
-<script>
-    (function () {
-      var STORAGE_KEY = 'sportsTickerSelections';
-      var NFL_HEADER_LOGO = './images/nfl.svg';
-      var DEFAULT_HEADER_LOGO = './img/AllLeaguesFramed.jpg';
-      var SECTION_STATE_KEY = 'tickerControlsExpanded';
-
-      function loadSelections() {
-        try {
-          var raw = localStorage.getItem(STORAGE_KEY);
-          return raw ? JSON.parse(raw) : null;
-        } catch (e) {
-          return null;
-        }
-      }
-
-      function saveSelections(checkboxes) {
-        var selections = {};
-        checkboxes.forEach(function (cb) {
-          selections[cb.id] = !!cb.checked;
-        });
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(selections));
-        } catch (e) {
-          // ignore storage errors
-        }
-      }
-
-      function updateHeaderLogo(checkboxes) {
-        var headerImg = document.getElementById('header-logo');
-        if (!headerImg) return;
-        var nflChecked = checkboxes.some(function (cb) { return cb.id === 'cb-nfl' && cb.checked; });
-        headerImg.src = nflChecked ? NFL_HEADER_LOGO : DEFAULT_HEADER_LOGO;
-      }
-
-      function updateVisibilityByState(checkboxes) {
-        checkboxes.forEach(function (cb) {
-          var targetId = cb.getAttribute('data-target');
-          var el = document.getElementById(targetId);
-          if (!el) return;
-          el.style.display = cb.checked ? '' : 'none';
-        });
-        updateHeaderLogo(checkboxes);
-      }
-
-      var checkboxes = Array.prototype.slice.call(document.querySelectorAll('#ticker-controls input[type="checkbox"]'));
-
-      // Restore previous selections if available
-      var saved = loadSelections();
-      if (saved) {
-        checkboxes.forEach(function (cb) {
-          if (saved.hasOwnProperty(cb.id)) {
-            cb.checked = !!saved[cb.id];
-          }
-        });
-      }
-
-      // Enforce single selection: ensure at most one is checked after restore
-      (function enforceSingleAfterRestore() {
-        var checked = checkboxes.filter(function (cb) { return cb.checked; });
-        if (checked.length > 1) {
-          // keep the first checked, uncheck the rest
-          checked.slice(1).forEach(function (cb) { cb.checked = false; });
-        }
-        if (checked.length === 0 && checkboxes.length) {
-          // if none selected, select the first by default
-          checkboxes[0].checked = true;
-        }
-      })();
-
-      // Initialize visibility on page load
-      updateVisibilityByState(checkboxes);
-
-      // Toggle on change and persist (single-select behavior)
-      checkboxes.forEach(function (cb) {
-        cb.addEventListener('change', function () {
-          if (cb.checked) {
-            // Uncheck all others
-            checkboxes.forEach(function (other) {
-              if (other !== cb) other.checked = false;
-            });
-          } else {
-            // Prevent all off: if user unchecks the only selected, re-check it
-            var anyChecked = checkboxes.some(function (x) { return x.checked; });
-            if (!anyChecked) cb.checked = true;
-          }
-          updateVisibilityByState(checkboxes);
-          saveSelections(checkboxes);
-        });
-      });
-
-      // Persist expand/collapse state of controls section
-      var details = document.getElementById('ticker-controls-details');
-      if (details) {
-        try {
-          var expandedRaw = localStorage.getItem(SECTION_STATE_KEY);
-          if (expandedRaw !== null) {
-            details.open = expandedRaw === 'true';
-          }
-          details.addEventListener('toggle', function () {
-            localStorage.setItem(SECTION_STATE_KEY, details.open ? 'true' : 'false');
-          });
-        } catch (e) { /* ignore */ }
-      }
-    })();
-</script>
+<script src="~/js/tickers.js"></script>

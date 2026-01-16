@@ -8,3 +8,4 @@ wwwroot\Img\AllSportsPhoneImageSmall.png
 wwwroot\Img\NFL_Flag.jpg
 wwwroot\Img\NFL_Ticker_Logo.jpg
 wwwroot\js\site.js
+wwwroot\js\tickers.js
