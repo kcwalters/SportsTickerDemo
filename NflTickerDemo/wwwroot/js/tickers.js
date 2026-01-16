@@ -1,6 +1,5 @@
 (function () {
   var STORAGE_KEY = 'sportsTickerSelections';
-  var SECTION_STATE_KEY = 'tickerControlsExpanded';
   var NFL_HEADER_LOGO = './images/nfl.svg';
   var DEFAULT_HEADER_LOGO = './img/AllLeaguesFramed.jpg';
 
@@ -8,9 +7,7 @@
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
   }
 
   function saveSelections(checkboxes) {
@@ -34,6 +31,20 @@
       el.style.display = cb.checked ? '' : 'none';
     });
     updateHeaderLogo(checkboxes);
+    updateSelectedLogo(checkboxes);
+  }
+
+  function updateSelectedLogo(checkboxes) {
+    var nflLogo = document.getElementById('logo-nfl');
+    var nbaLogo = document.getElementById('logo-nba');
+    var nhlLogo = document.getElementById('logo-nhl');
+    if (!nflLogo || !nbaLogo || !nhlLogo) return;
+    var selectedId = null;
+    checkboxes.forEach(function (cb) { if (cb.checked) selectedId = cb.id; });
+    // Show the selected logo, hide others
+    nflLogo.style.display = selectedId === 'cb-nfl' ? '' : 'none';
+    nbaLogo.style.display = selectedId === 'cb-nba' ? '' : 'none';
+    nhlLogo.style.display = selectedId === 'cb-nhl' ? '' : 'none';
   }
 
   function initControls() {
@@ -69,13 +80,8 @@
 
     var details = document.getElementById('ticker-controls-details');
     if (details) {
-      try {
-        var expandedRaw = localStorage.getItem(SECTION_STATE_KEY);
-        if (expandedRaw !== null) { details.open = expandedRaw === 'true'; }
-        details.addEventListener('toggle', function () {
-          localStorage.setItem(SECTION_STATE_KEY, details.open ? 'true' : 'false');
-        });
-      } catch (e) {}
+      details.addEventListener('mouseenter', function () { details.open = true; });
+      details.addEventListener('mouseleave', function () { details.open = false; });
     }
   }
 

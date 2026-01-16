@@ -1,11 +1,15 @@
-wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\Img\AdobeStock_548545567_Editorial_Use_Only_edited.jpg
 wwwroot\Img\AllLeaguesFramed.jpg
 wwwroot\Img\AllSportsPhoneImage.jpg
 wwwroot\Img\AllSportsPhoneImageMedium.jpg
 wwwroot\Img\AllSportsPhoneImageSmall.png
+wwwroot\Img\NBALogoMedium.png
+wwwroot\Img\NBALogoSmall.png
+wwwroot\Img\NBA_Ticker_Logo.jpg
 wwwroot\Img\NFL_Flag.jpg
 wwwroot\Img\NFL_Ticker_Logo.jpg
+wwwroot\Img\NHLogoSmall.png
 wwwroot\js\site.js
 wwwroot\js\tickers.js
+wwwroot\css\site.css

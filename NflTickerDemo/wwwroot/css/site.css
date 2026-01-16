@@ -32,8 +32,13 @@ body {
     white-space: nowrap;
 }
 
-/* Horizontal scrolling container */
+/* Container (non-scrolling) */
 .nfl-ticker-inner {
+    display: block; /* ensure inner wrapper does not scroll */
+}
+
+/* Horizontal scrolling container */
+.nfl-ticker-track {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem; /* spacing between box scores */
@@ -151,8 +156,12 @@ body {
     white-space: nowrap;
 }
 
+/* Container (non-scrolling) */
+.nba-ticker-inner {
+    display: block; /* ensure inner wrapper does not scroll */
+}
+
 /* Horizontal scrolling container */
-.nba-ticker-inner,
 .nba-ticker-track {
     display: inline-flex;
     align-items: center;
@@ -280,6 +289,18 @@ body {
     width: auto;
     object-fit: contain;
     display: inline-block;
+}
+
+/* Controls container inline layout */
+#ticker-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+#ticker-controls img[id^="logo-"] {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* Layout: tickers row */
