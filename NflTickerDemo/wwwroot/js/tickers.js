@@ -29,22 +29,9 @@
       var el = document.getElementById(targetId);
       if (!el) return;
       el.style.display = cb.checked ? '' : 'none';
+      el.setAttribute('aria-hidden', cb.checked ? 'false' : 'true');
     });
     updateHeaderLogo(checkboxes);
-    updateSelectedLogo(checkboxes);
-  }
-
-  function updateSelectedLogo(checkboxes) {
-    var nflLogo = document.getElementById('logo-nfl');
-    var nbaLogo = document.getElementById('logo-nba');
-    var nhlLogo = document.getElementById('logo-nhl');
-    if (!nflLogo || !nbaLogo || !nhlLogo) return;
-    var selectedId = null;
-    checkboxes.forEach(function (cb) { if (cb.checked) selectedId = cb.id; });
-    // Show the selected logo, hide others
-    nflLogo.style.display = selectedId === 'cb-nfl' ? '' : 'none';
-    nbaLogo.style.display = selectedId === 'cb-nba' ? '' : 'none';
-    nhlLogo.style.display = selectedId === 'cb-nhl' ? '' : 'none';
   }
 
   function initControls() {
@@ -78,10 +65,10 @@
       });
     });
 
+    // Remove hover-only interaction; <details>/<summary> provides accessible toggle by click/keyboard
     var details = document.getElementById('ticker-controls-details');
     if (details) {
-      details.addEventListener('mouseenter', function () { details.open = true; });
-      details.addEventListener('mouseleave', function () { details.open = false; });
+      // Ensure summary is focusable and has aria-label via markup; no JS hover handlers
     }
   }
 
