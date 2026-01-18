@@ -4,6 +4,8 @@ VisualStudioVersion = 18.1.11304.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsTickerDemo", "NflTickerDemo\SportsTickerDemo.csproj", "{D1E4A7F0-2C61-4F51-9C1B-3B4D9B710001}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NflTickerDemo.Tests", "NflTickerDemo.Tests\NflTickerDemo.Tests.csproj", "{018C077A-DDB0-13CA-99A3-22B9E9FB1680}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,10 @@ Global
 		{D1E4A7F0-2C61-4F51-9C1B-3B4D9B710001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E4A7F0-2C61-4F51-9C1B-3B4D9B710001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1E4A7F0-2C61-4F51-9C1B-3B4D9B710001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{018C077A-DDB0-13CA-99A3-22B9E9FB1680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{018C077A-DDB0-13CA-99A3-22B9E9FB1680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{018C077A-DDB0-13CA-99A3-22B9E9FB1680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{018C077A-DDB0-13CA-99A3-22B9E9FB1680}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

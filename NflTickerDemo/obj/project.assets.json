@@ -5831,11 +5831,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kcwal\\source\\repos\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
+      "projectUniqueName": "C:\\Users\\kcwal\\source\\repos\\kcwalters\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
       "projectName": "SportsTickerDemo",
-      "projectPath": "C:\\Users\\kcwal\\source\\repos\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
+      "projectPath": "C:\\Users\\kcwal\\source\\repos\\kcwalters\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
       "packagesPath": "C:\\Users\\kcwal\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kcwal\\source\\repos\\SportsTickerDemo\\NflTickerDemo\\obj\\",
+      "outputPath": "C:\\Users\\kcwal\\source\\repos\\kcwalters\\SportsTickerDemo\\NflTickerDemo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using SportsTickerDemo.Services;
+using Xunit;
 
 public class NBAScoresServiceTests
 {

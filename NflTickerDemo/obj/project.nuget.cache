@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "q2cIo5U1th4=",
+  "dgSpecHash": "Z+EA1BEZPoU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kcwal\\source\\repos\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
+  "projectFilePath": "C:\\Users\\kcwal\\source\\repos\\kcwalters\\SportsTickerDemo\\NflTickerDemo\\SportsTickerDemo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kcwal\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\kcwal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
